@@ -4,7 +4,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script> 
 <script> 
 $(function(){
-  $("#includedContent").load("https://montedev0516.github.io/gtranslate-script/Gtranslatev4.html"); 
+  $("#includedContent").load("https://salescircle.github.io/gtranslator/Gtranslatev4-wordpress.html"); 
     });
 </script> 
 <div id="includedContent"></div>
