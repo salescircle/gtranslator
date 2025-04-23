@@ -1,0 +1,42 @@
+<style>
+/* Styles for the translator container */
+.gtranslate_wrapper {
+    position: fixed; /* Makes the container fixed on the screen */
+    bottom: 20px; /* Distance from the bottom of the screen */
+    right: 20px; /* Distance from the right side of the screen */
+    z-index: 1000; /* Ensures the widget stays on top of other elements */
+}
+
+/* Optional: Adds some styling to the translator button */
+.gtranslate_wrapper a {
+    padding: 10px 15px; /* Padding inside the button */
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none; /* Removes underline from links */
+    display: inline-block; /* Makes the link behave like a block element */
+}
+
+</style>
+
+<!-- Translator container -->
+<div class="gtranslate_wrapper"></div>
+
+<!-- Translator script -->
+<script>
+// Configuration for the Google Translate widget
+window.gtranslateSettings = {
+    "default_language": "de", // Default language is German
+ //   "native_language_names":true,
+    "languages": ["de", "en", "el"], // Supported languages: German, English, Greek
+    "wrapper_selector": ".gtranslate_wrapper", // The container for the widget
+    "switcher_horizontal_position": "inline", // Horizontal alignment of the switcher
+//    "float_switcher_open_direction": "bottom", // Opens the switcher dropdown downwards
+//    "alt_flags": {
+//        "de": "germany", // Flag for German
+//        "en": "uk", // Flag for English (UK)
+//        "el": "greece" // Flag for Greek
+//    }
+};
+</script>
+
+<!-- Loads the Google Translate widget library -->
+<script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>

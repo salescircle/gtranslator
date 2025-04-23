@@ -1,0 +1,276 @@
+<style>
+.gtranslate_wrapper {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+.gtranslate_wrapper a {
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf {
+   display: none !important;
+}
+.VIpgJd-ZVi9od-aZ2wEe-OiiCO {
+   display: none !important;
+}
+.goog-te-spinner {  
+    display: none !important;  
+}
+</style>
+
+<!-- Configuration Script - IMPORTANT: Keep this LAST -->
+<script>
+window.gtranslateSettings = {
+    "default_language": "de",
+    "languages": ["de", "en", "el"],
+    "wrapper_selector": ".gtranslate_wrapper",
+    "switcher_horizontal_position": "inline",
+    "detect_browser_language": false
+};
+setInterval( () => { 
+document.querySelectorAll('.widgets-time-slot').forEach(element => {  
+    		element.classList.add('notranslate');
+	});
+}, 20);
+</script>
+
+<!-- Translator container -->
+<div class="gtranslate_wrapper"></div>
+
+<script>
+// Advanced Persistent GTranslate Language Tracking
+(function() {
+    // Configuration
+    const CONFIG = {
+        DEFAULT_LANGUAGE: 'de',
+        SUPPORTED_LANGUAGES: ['de', 'en', 'el'],
+        STORAGE_KEY: 'gTranslateLanguageState',
+        COOKIE_EXPIRY_DAYS: 30
+    };
+
+    // Comprehensive Logging
+    function safeLog(message) {
+        try {
+            console.log('[GTranslate Persistent Tracker]:', message);
+        } catch (e) {
+            // Fallback logging
+            alert(message);
+        }
+    }
+
+    // Cookie Management Utility
+    const CookieManager = {
+        set: function(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = `${name}=${value};${expires};path=/;SameSite=Strict`;
+        },
+        get: function(name) {
+            const cookieName = name + "=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const cookieArray = decodedCookie.split(';');
+            for(let i = 0; i < cookieArray.length; i++) {
+                let cookie = cookieArray[i];
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1);
+                }
+                if (cookie.indexOf(cookieName) === 0) {
+                    return cookie.substring(cookieName.length, cookie.length);
+                }
+            }
+            return null;
+        }
+    };
+
+    // Comprehensive Language Detection
+    function detectCurrentLanguage() {
+document.querySelectorAll('.widgets-time-slot').forEach(element => {  
+    		element.classList.add('notranslate');
+	});
+        // Check multiple sources with priority
+        const sources = [
+            // 1. URL Parameter
+            () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const urlLang = urlParams.get('lang');
+		const gtranslateSelect = document.querySelector('.gt-options');  
+            if (gtranslateSelect) {  
+                // gtranslateSelect.value = urlLang;
+                // Dispatch change event to make GTranslate recognize the change  
+                const event = new Event('click', { bubbles: true });  
+                gtranslateSelect.dispatchEvent(event);  
+            } else {  
+                console.error('GTranslate select element not found!');  
+            }
+                if (urlLang && CONFIG.SUPPORTED_LANGUAGES.includes(urlLang)) {
+                    safeLog('Language from URL: ' + urlLang);
+                    return urlLang;
+                }
+                return null;
+            },
+            
+            // 2. Cookies
+            () => {
+                const cookieLang = CookieManager.get(CONFIG.STORAGE_KEY);
+                if (cookieLang && CONFIG.SUPPORTED_LANGUAGES.includes(cookieLang)) {
+                    safeLog('Language from Cookie: ' + cookieLang);
+                    return cookieLang;
+                }
+                return null;
+            },
+            
+            // 3. Local Storage
+            () => {
+                const storedLang = localStorage.getItem(CONFIG.STORAGE_KEY);
+                if (storedLang && CONFIG.SUPPORTED_LANGUAGES.includes(storedLang)) {
+                    safeLog('Language from localStorage: ' + storedLang);
+                    return storedLang;
+                }
+                return null;
+            },
+            
+            // 4. Fallback to default
+            () => {
+                safeLog('Falling back to default language: ' + CONFIG.DEFAULT_LANGUAGE);
+                return CONFIG.DEFAULT_LANGUAGE;
+            }
+        ];
+
+        // Find first valid language source
+        for (let source of sources) {
+            const lang = source();
+            if (lang) return lang;
+        }
+    }
+
+    // Comprehensive Language Update Function
+    function updateLanguageTracking(lang) {
+        try {
+document.querySelectorAll('.widgets-time-slot').forEach(element => {  
+    		element.classList.add('notranslate');
+	});
+            // Validate language
+            if (!CONFIG.SUPPORTED_LANGUAGES.includes(lang)) {
+                lang = CONFIG.DEFAULT_LANGUAGE;
+            }
+
+            // Update URL
+            const currentUrl = window.location.href;
+            const url = new URL(currentUrl);
+            
+            // Always set language parameter
+            url.searchParams.set('lang', lang);
+            
+            // Update URL without page reload
+            window.history.replaceState({}, '', url.toString());
+
+            // Persist language across methods
+            localStorage.setItem(CONFIG.STORAGE_KEY, lang);
+            CookieManager.set(CONFIG.STORAGE_KEY, lang, CONFIG.COOKIE_EXPIRY_DAYS);
+
+            // If GTranslate is available, force language
+            if (window.GTranslate && window.GTranslate.setLanguage) {
+                window.GTranslate.setLanguage(lang);
+            }
+
+            safeLog('Language comprehensively updated to: ' + lang);
+
+            return lang;
+        } catch (error) {
+            safeLog('Language update error: ' + error.message);
+            return CONFIG.DEFAULT_LANGUAGE;
+        }
+    }
+
+    // Initialize Language Tracking
+    function initLanguageTracking() {
+document.querySelectorAll('.widgets-time-slot').forEach(element => {  
+    		element.classList.add('notranslate');
+	});
+        safeLog('Initializing Persistent Language Tracking');
+
+        // Detect and set initial language
+        const initialLang = detectCurrentLanguage();
+        updateLanguageTracking(initialLang);
+
+        // Periodic language change detection
+        let lastLang = initialLang;
+        console.log('lastlang-->', lastLang);
+console.log('initcurrentLang-->', document.querySelector('html').getAttribute('lang'));
+        setInterval(() => {
+            try {
+document.querySelectorAll('.widgets-time-slot').forEach(element => {  
+    		element.classList.add('notranslate');
+	});
+const langCodeSpans = document.getElementsByClassName('gt-lang-code');  
+const langcontent = langCodeSpans.length > 0 ? langCodeSpans[0].textContent : null; 
+                const currentLang = langcontent || initialLang;
+          console.log('currentLang-->', currentLang);
+          console.log('lastLang-->', lastLang);
+          if(currentLang == 'de') {
+        document.querySelectorAll('.video-de').forEach(element => {  
+    		element.style.display = 'flex';  
+	});
+	document.querySelectorAll('.video-en').forEach(element => {  
+    		element.style.display = 'none';
+	});
+	document.querySelectorAll('.video-el').forEach(element => {  
+    		element.style.display = 'none';
+	});
+} else if(currentLang == 'en') {
+       	document.querySelectorAll('.video-de').forEach(element => {  
+    		element.style.display = 'none';  
+	});
+	document.querySelectorAll('.video-en').forEach(element => {  
+    		element.style.display = 'flex';
+	});
+	document.querySelectorAll('.video-el').forEach(element => {  
+    		element.style.display = 'none';
+	});
+} else if(currentLang == 'el') {
+       	document.querySelectorAll('.video-de').forEach(element => {  
+    		element.style.display = 'none';  
+	});
+	document.querySelectorAll('.video-en').forEach(element => {  
+    		element.style.display = 'none';
+	});
+	document.querySelectorAll('.video-el').forEach(element => {  
+    		element.style.display = 'flex';
+	});
+}
+                if (currentLang !== lastLang) {
+                    safeLog('Language change detected: ' + currentLang);
+                    updateLanguageTracking(currentLang);
+                    lastLang = currentLang;
+                }
+             
+            } catch (error) {
+                safeLog('Tracking error: ' + error.message);
+            }
+        }, 1000);
+    }
+
+    // Ensure script runs after page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLanguageTracking);
+    } else {
+        initLanguageTracking();
+    }
+
+    // Expose for manual debugging and interaction
+    window.GTranslateTracker = {
+        updateLanguage: updateLanguageTracking,
+        getCurrentLanguage: detectCurrentLanguage,
+        getSupportedLanguages: () => CONFIG.SUPPORTED_LANGUAGES
+    };
+})();
+</script>
+
+<!-- Translator script - IMPORTANT: Keep this AFTER our tracking script -->
+<script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+
