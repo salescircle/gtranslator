@@ -190,6 +190,10 @@ window.gtranslateSettings = {
 	        });
         }
         if (currentLang !== lastLang) {
+
+            safeLog('Language change detected: ' + currentLang);
+            lastLang = currentLang;
+            
             document.querySelectorAll('.video-en').forEach(div => {
   			    const iframe = div.querySelector('iframe');
   		    	var src = iframe.src;
@@ -205,8 +209,7 @@ window.gtranslateSettings = {
   		    	var src = iframe.src;
   		    	iframe.src = src;
 		    });
-            safeLog('Language change detected: ' + currentLang);
-            lastLang = currentLang;
+            
         }
         } catch (error) {
             safeLog('Tracking error: ' + error.message);
